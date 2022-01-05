@@ -9,6 +9,7 @@ const main = async () => {
   let contractBalance = await hre.ethers.provider.getBalance(
     waveContract.address
   );
+
   console.log(
     "Contract balance:",
     hre.ethers.utils.formatEther(contractBalance)
@@ -16,9 +17,6 @@ const main = async () => {
 
   const waveTxn = await waveContract.wave("This is wave #1");
   await waveTxn.wait();
-
-  const waveTxn2 = await waveContract.wave("This is wave #2");
-  await waveTxn2.wait();
 
   contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
   console.log(
@@ -28,6 +26,13 @@ const main = async () => {
 
   let allWaves = await waveContract.getAllWaves();
   console.log(allWaves);
+
+  // Dar o like
+  const likeTxn = await waveContract.like(allWaves[0].id);
+  await likeTxn.wait();
+
+  let firstWaveTotalLikes = await waveContract.getWaveTotalLikes(allWaves[0].id);
+  console.log(firstWaveTotalLikes);
 };
 
 const runMain = async () => {
